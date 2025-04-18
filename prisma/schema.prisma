@@ -19,6 +19,8 @@ model Org {
   manager       String
   cep           String
   address       String   @unique
+  city          String 
+  state         String
   whatsapp      String
   password_hash String
   created_at    DateTime @default(now())
@@ -54,7 +56,7 @@ model PetRequirement {
   Requirement String
   pet_id      String? @db.Uuid
 
-  Pet Pet? @relation(fields: [pet_id], references: [id])
+  pet Pet? @relation(fields: [pet_id], references: [id])
 
   @@map("PetRequirements")
 }
