@@ -9,6 +9,8 @@ interface RegisterOrgUseCaseProps {
   password: string
   whatsapp: string
   manager: string
+  city: string
+  state: string
 }
 interface RegisterUseCaseResponse {
   org: Org
@@ -23,6 +25,8 @@ export class RegisterOrgUseCase {
     manager,
     password,
     whatsapp,
+    city,
+    state,
   }: RegisterOrgUseCaseProps): Promise<RegisterUseCaseResponse> {
     const password_hash = await bcrypt.hash(password, 6)
     const orgWithSameEmail = await this.orgsRepository.findOrgByEmail(email)
@@ -36,6 +40,8 @@ export class RegisterOrgUseCase {
       manager,
       password_hash,
       whatsapp,
+      city,
+      state,
     })
 
     return { org }

@@ -19,6 +19,8 @@ describe('Authenticate Use Case', () => {
       manager: 'jonh',
       password_hash: await hash('123456', 6),
       whatsapp: '123213213',
+      city: 'Rio de Janeiro',
+      state: 'Rj',
     })
     const { org } = await sut.execute({
       email: 'jonhdoe@email.com',
@@ -44,6 +46,8 @@ describe('Authenticate Use Case', () => {
       manager: 'jonh',
       password_hash: await hash('123456', 6),
       whatsapp: '123213213',
+      city: 'Rio de Janeiro',
+      state: 'Rj',
     })
     await expect(
       sut.execute({

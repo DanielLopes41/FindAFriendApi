@@ -20,6 +20,8 @@ describe('Register Use Case', () => {
       manager: 'Jonh Doe',
       password: '123456',
       whatsapp: '219999922222222',
+      city: 'Rio de Janeiro',
+      state: 'Rj',
     })
     await expect(async () => {
       await sut.execute({
@@ -29,6 +31,8 @@ describe('Register Use Case', () => {
         manager: 'Jonh Doe',
         password: '123456',
         whatsapp: '219999922222222',
+        city: 'Rio de Janeiro',
+        state: 'Rj',
       })
     }).rejects.toBeInstanceOf(OrgAlredyExistsError)
   })
@@ -40,6 +44,8 @@ describe('Register Use Case', () => {
       manager: 'Jonh Doe',
       password: '123456',
       whatsapp: '219999922222222',
+      city: 'Rio de Janeiro',
+      state: 'Rj',
     })
 
     expect(org.id).toEqual(expect.any(String))
@@ -52,6 +58,8 @@ describe('Register Use Case', () => {
       manager: 'Jonh Doe',
       password: '123456',
       whatsapp: '219999922222222',
+      city: 'Rio de Janeiro',
+      state: 'Rj',
     })
     const isPasswordCorrectlyHashed = await compare('123456', org.password_hash)
 

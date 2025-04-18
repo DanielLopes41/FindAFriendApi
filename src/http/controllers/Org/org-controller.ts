@@ -1,5 +1,6 @@
 import { OrgAlredyExistsError } from '@/use-cases/errors/org-alredy-exists-error'
 import { makeRegisterUseCase } from '@/use-cases/factories/make-register-org-use-case'
+import { findCityAndStateByCep } from '@/utils/findCityAndStateByCep'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -15,6 +16,8 @@ export class OrgRegisterController {
     })
     const { email, address, cep, manager, password, whatsapp } =
       orgSchema.parse(request.body)
+
+    const { state, city } = await findCityAndStateByCep(cep)
     try {
       const registerOrgUseCase = makeRegisterUseCase()
       await registerOrgUseCase.execute({
@@ -24,6 +27,8 @@ export class OrgRegisterController {
         manager,
         password,
         whatsapp,
+        state,
+        city,
       })
       return reply.status(201)
     } catch (e) {

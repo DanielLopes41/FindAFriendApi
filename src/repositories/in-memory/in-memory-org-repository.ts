@@ -12,6 +12,8 @@ export class InMemoryOrgRepository implements OrgRepository {
       cep: data.cep,
       whatsapp: data.whatsapp,
       password_hash: data.password_hash,
+      city: data.city,
+      state: data.state,
       created_at: new Date(),
       updated_at: new Date(),
     }
