@@ -18,6 +18,13 @@ export class InMemoryPetRepository implements PetRepository {
   public items: Pet[] = []
 
   constructor(private orgsRepository?: InMemoryOrgRepository) {}
+  async delete(id: string) {
+    const itemIndex = await this.items.findIndex((item) => id === item.id)
+
+    if (itemIndex !== -1) {
+      this.items.splice(itemIndex, 1)
+    }
+  }
 
   async searchMany({
     age,
@@ -62,7 +69,7 @@ export class InMemoryPetRepository implements PetRepository {
     }
 
     const pet: Pet = {
-      id: randomUUID(),
+      id: data.id || randomUUID(),
       name: data.name,
       description: data.description,
       age: data.age,

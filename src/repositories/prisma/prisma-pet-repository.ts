@@ -2,6 +2,14 @@ import { prisma } from '@/lib/Prisma'
 import { Pet, Prisma } from '@prisma/client'
 import { PetRepository } from '../pet-repository'
 export class PrismaPetRepository implements PetRepository {
+  async delete(id: string): Promise<void> {
+    await prisma.pet.delete({
+      where: {
+        id,
+      },
+    })
+  }
+
   async searchMany(params: {
     city: string
     age?: string

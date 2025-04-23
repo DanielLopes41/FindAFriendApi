@@ -12,12 +12,13 @@ export interface SimplePetCreateInput {
 export interface PetRepository {
   create(data: Prisma.PetCreateInput): Promise<Pet>
   searchMany(params: {
-    city: string;
-    age?: string;
-    size?: string;
-    energy_level?: string;
-    independency?: string;
-    environment?: string;
-    page?: number;
+    city: string
+    age?: string
+    size?: string
+    energy_level?: string
+    independency?: string
+    environment?: string
+    page?: number
   }): Promise<Pet[]>
+  delete(id: string): Promise<void>
 }

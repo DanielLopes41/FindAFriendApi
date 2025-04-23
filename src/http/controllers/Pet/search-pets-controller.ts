@@ -12,8 +12,9 @@ export class SearchPetsController {
       energy_level: z.enum(['1', '2', '3', '4', '5']).optional(),
       independency: z.enum(['1', '2', '3', '4', '5']).optional(),
       environment: z.enum(['small', 'medium', 'large']).optional(),
+      page: z.number().default(1).optional(),
     })
-    const { age, size, energy_level, independency, environment, city } =
+    const { age, size, energy_level, independency, environment, city, page } =
       orgSchema.parse(request.body)
     try {
       const searchPetsUseCase = makeSearchPetsUseCase()
@@ -24,6 +25,7 @@ export class SearchPetsController {
         environment,
         independency,
         size,
+        page,
       })
       return reply.status(201)
     } catch (e) {
