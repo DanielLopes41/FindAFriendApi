@@ -3,9 +3,16 @@ import { OrgRepository } from '../org-repository'
 
 export class InMemoryOrgRepository implements OrgRepository {
   public items: Org[] = []
+
+  async fetchOrgsByCity(city: string): Promise<Org[] | null> {
+    const orgs = this.items.filter((org) => org.city === city)
+
+    return orgs
+  }
+
   async create(data: Prisma.OrgCreateInput) {
     const org = {
-      id: '1232',
+      id: data.id || '123',
       email: data.email,
       manager: data.manager,
       address: data.address,

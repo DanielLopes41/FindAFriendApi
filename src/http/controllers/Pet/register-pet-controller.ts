@@ -1,5 +1,5 @@
 import { RegisterPetError } from '@/use-cases/errors/register-pet-error'
-import { makeRegisterPetUseCase } from '@/use-cases/factories/make-pet-use-case'
+import { makeRegisterPetUseCase } from '@/use-cases/factories/make-register-pet-use-case copy'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 

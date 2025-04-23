@@ -1,11 +1,68 @@
-import { Prisma, Pet } from '@prisma/client'
+import { Pet, Prisma } from '@prisma/client'
 import { PetRepository } from '../pet-repository'
+import { InMemoryOrgRepository } from './in-memory-org-repository'
+import { randomUUID } from 'crypto'
+
+export interface findPets {
+  name: string
+  description: string
+  age: string
+  size: string
+  energy_level: string
+  independency: string
+  environment: string
+  city: string
+}
 
 export class InMemoryPetRepository implements PetRepository {
   public items: Pet[] = []
+
+  constructor(private orgsRepository?: InMemoryOrgRepository) {}
+
+  async searchMany({
+    age,
+    city,
+    size,
+    energy_level,
+    independency,
+    environment,
+    page = 1,
+  }: {
+    age?: string
+    city: string
+    size?: string
+    energy_level?: string
+    independency?: string
+    environment?: string
+    page?: number
+  }) {
+    const orgsByCity = (await this.orgsRepository?.fetchOrgsByCity(city)) ?? []
+
+    return this.items
+      .filter((pet) =>
+        orgsByCity.some(
+          (org) =>
+            org.id === pet.org_id &&
+            (!age || pet.age === age) &&
+            (!size || pet.size === size) &&
+            (!energy_level || pet.energy_level === energy_level) &&
+            (!independency || pet.independency === independency) &&
+            (!environment || pet.environment === environment),
+        ),
+      )
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async create(data: Prisma.PetCreateInput) {
+    let org_id = 'default-org-id'
+
+    if (data.org && typeof data.org === 'object' && 'connect' in data.org) {
+      const connect = data.org.connect as { id: string }
+      org_id = connect.id
+    }
+
     const pet: Pet = {
-      id: 'pet-123',
+      id: randomUUID(),
       name: data.name,
       description: data.description,
       age: data.age,
@@ -15,7 +72,7 @@ export class InMemoryPetRepository implements PetRepository {
       environment: data.environment,
       created_at: new Date(),
       updated_at: new Date(),
-      org_id: '123',
+      org_id,
     }
     this.items.push(pet)
     return pet
