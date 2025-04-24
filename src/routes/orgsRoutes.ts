@@ -1,5 +1,5 @@
 import { OrgAuthenticateController } from '@/http/controllers/Org/authenticate'
-import { OrgRegisterController } from '@/http/controllers/Org/org-controller'
+import { OrgRegisterController } from '@/http/controllers/Org/org-register-controller'
 import { FastifyInstance } from 'fastify'
 export function orgsRoutes(app: FastifyInstance) {
   const orgRegisterController = new OrgRegisterController()

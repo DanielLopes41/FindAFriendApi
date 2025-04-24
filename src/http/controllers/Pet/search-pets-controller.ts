@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 export class SearchPetsController {
   async searchMany(request: FastifyRequest, reply: FastifyReply) {
-    const orgSchema = z.object({
+    const petSchema = z.object({
       city: z.string(),
       age: z.enum(['puppy', 'adult', 'elderly']).optional(),
       size: z.enum(['small', 'medium', 'large']).optional(),
@@ -15,7 +15,7 @@ export class SearchPetsController {
       page: z.number().default(1).optional(),
     })
     const { age, size, energy_level, independency, environment, city, page } =
-      orgSchema.parse(request.body)
+      petSchema.parse(request.body)
     try {
       const searchPetsUseCase = makeSearchPetsUseCase()
       await searchPetsUseCase.execute({

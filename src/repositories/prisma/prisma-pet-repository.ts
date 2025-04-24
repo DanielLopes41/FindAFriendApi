@@ -2,10 +2,20 @@ import { prisma } from '@/lib/Prisma'
 import { Pet, Prisma } from '@prisma/client'
 import { PetRepository } from '../pet-repository'
 export class PrismaPetRepository implements PetRepository {
-  async delete(id: string): Promise<void> {
+  async getPet({ id }: { id: string }) {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id,
+      },
+    })
+    return pet
+  }
+
+  async delete({ id, org_id }: { id: string; org_id: string }): Promise<void> {
     await prisma.pet.delete({
       where: {
         id,
+        org_id,
       },
     })
   }

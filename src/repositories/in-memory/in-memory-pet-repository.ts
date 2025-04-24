@@ -18,8 +18,16 @@ export class InMemoryPetRepository implements PetRepository {
   public items: Pet[] = []
 
   constructor(private orgsRepository?: InMemoryOrgRepository) {}
-  async delete(id: string) {
-    const itemIndex = await this.items.findIndex((item) => id === item.id)
+  async getPet({ id }: { id: string }) {
+    const pet = await this.items.find((item) => id === item.id)
+
+    return pet
+  }
+
+  async delete({ id, org_id }: { id: string; org_id: string }) {
+    const itemIndex = await this.items.findIndex(
+      (item) => id === item.id && org_id === item.org_id,
+    )
 
     if (itemIndex !== -1) {
       this.items.splice(itemIndex, 1)

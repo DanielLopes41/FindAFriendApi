@@ -12,11 +12,21 @@ export class OrgAuthenticateController {
     const { email, password } = orgSchema.parse(request.body)
     try {
       const authenticateUseCase = makeAuthenticateUseCase()
-      await authenticateUseCase.execute({
+      const { org } = await authenticateUseCase.execute({
         email,
         password,
       })
-      return reply.status(200).send()
+
+      const token = await reply.jwtSign(
+        {},
+        {
+          sign: {
+            sub: org.id,
+          },
+        },
+      )
+
+      return reply.status(200).send(token)
     } catch (e) {
       if (e instanceof InvalidCredentialsError) {
         return reply.status(400).send({ message: e.message })

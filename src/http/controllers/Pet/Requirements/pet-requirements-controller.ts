@@ -3,7 +3,7 @@ import { makePetRequirementsUseCase } from '@/use-cases/factories/make-pet-requi
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
-export class PetRegisterController {
+export class PetRequirementController {
   async register(request: FastifyRequest, reply: FastifyReply) {
     const orgSchema = z.object({
       Requirement: z.string().min(10),

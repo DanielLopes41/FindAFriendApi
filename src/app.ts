@@ -2,9 +2,13 @@ import fastify from 'fastify'
 import { orgsRoutes } from './routes/orgsRoutes'
 import { ZodError } from 'zod'
 import { env } from './env'
+import fastifyJwt from '@fastify/jwt'
 
 export const app = fastify({
   logger: true,
+})
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
 })
 const routes = [{ handler: orgsRoutes, prefix: '/orgs' }]
 routes.forEach(({ handler, prefix }) => {

@@ -1,21 +1,20 @@
 import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryPetRepository } from '@/repositories/in-memory/in-memory-pet-repository'
-import { SearchPetsUseCase } from './search-pets'
 import { InMemoryOrgRepository } from '@/repositories/in-memory/in-memory-org-repository'
 import { hash } from 'bcryptjs'
-import { FailToSearchPetError } from '../errors/fail-to-seach-pets-error'
+import { GetPetUseCase } from './get-pet-use-case'
 
 let petsRepository: InMemoryPetRepository
 let orgsRepository: InMemoryOrgRepository
-let sut: SearchPetsUseCase
+let sut: GetPetUseCase
 
-describe('Search pets Use Case', () => {
+describe('Get pet Use Case', () => {
   beforeEach(() => {
     orgsRepository = new InMemoryOrgRepository()
     petsRepository = new InMemoryPetRepository(orgsRepository)
-    sut = new SearchPetsUseCase(petsRepository)
+    sut = new GetPetUseCase(petsRepository)
   })
-  it('should to be able to find pets in the same city', async () => {
+  it('should to be able to get pet', async () => {
     await orgsRepository.create({
       address: 'rj',
       id: 'org-123',
@@ -54,27 +53,22 @@ describe('Search pets Use Case', () => {
       })
     }
     await petsRepository.create({
-      name: 'Buddy',
+      id: '2',
+      name: 'Friend',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos explicabo, quam eum pariatur provident optio eveniet, accusantium voluptatum nostrum architecto exercitationem consequatur deserunt veritatis quae? Accusamus est fugiat eum hic!',
       age: 'puppy',
       size: 'medium',
-      energy_level: '3',
+      energy_level: '4',
       independency: '3',
       environment: 'small',
       org: {
         connect: { id: 'org-13' },
       },
     })
-    const { pets } = await sut.execute({
-      city: 'Rio de Janeiro',
+    const { pet } = await sut.execute({
+      id: '2',
     })
-    expect(pets.length).toEqual(4)
-  })
-  it('should not be able to search pets without a city param', async () => {
-    // @ts-expect-error testando comportamento com city ausente
-    await expect(() => sut.execute({})).rejects.toBeInstanceOf(
-      FailToSearchPetError,
-    )
+    expect(pet.name).toEqual('Friend')
   })
 })

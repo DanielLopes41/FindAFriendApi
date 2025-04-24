@@ -46,6 +46,7 @@ describe('Pet Use Case', () => {
     expect(pets.length).toEqual(1)
     await sut.execute({
       id: '1',
+      org_id: 'org-123',
     })
     const petsAfter = await petsRepository.searchMany({
       city: 'Rio de Janeiro',
