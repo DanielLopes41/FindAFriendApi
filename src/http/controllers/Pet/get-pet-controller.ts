@@ -11,10 +11,28 @@ export class GetPetController {
     const { id } = petSchema.parse(request.params)
     try {
       const getPetUseCase = makeGetPetUseCase()
-      await getPetUseCase.execute({
+      const {
+        age,
+        description,
+        energy_level,
+        environment,
+        independency,
+        name,
+        requirements,
+        size,
+      } = await getPetUseCase.execute({
         id,
       })
-      return reply.status(201)
+      return reply.status(200).send({
+        age,
+        description,
+        energy_level,
+        environment,
+        independency,
+        name,
+        requirements,
+        size,
+      })
     } catch (e) {
       if (e instanceof RegisterPetError) {
         return reply.status(409).send({ message: e.message })

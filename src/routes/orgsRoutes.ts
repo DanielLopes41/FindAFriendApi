@@ -4,6 +4,6 @@ import { FastifyInstance } from 'fastify'
 export function orgsRoutes(app: FastifyInstance) {
   const orgRegisterController = new OrgRegisterController()
   const orgAuthenticateController = new OrgAuthenticateController()
-  app.post('/', orgRegisterController.register)
+  app.post('/org', orgRegisterController.register)
   app.post('/session', orgAuthenticateController.Authenticate)
 }

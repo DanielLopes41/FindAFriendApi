@@ -13,8 +13,8 @@ export class PetRegisterController {
       energy_level: z.enum(['1', '2', '3', '4', '5']),
       independency: z.enum(['1', '2', '3', '4', '5']),
       environment: z.enum(['small', 'medium', 'large']),
-      org_id: z.string(),
     })
+
     const {
       name,
       description,
@@ -23,8 +23,8 @@ export class PetRegisterController {
       energy_level,
       independency,
       environment,
-      org_id,
     } = orgSchema.parse(request.body)
+    const org_id = request.orgId!
     try {
       const registerPetUseCase = makeRegisterPetUseCase()
       await registerPetUseCase.execute({
@@ -37,7 +37,9 @@ export class PetRegisterController {
         org_id,
         environment,
       })
-      return reply.status(201)
+      return reply.status(201).send({
+        message: 'success',
+      })
     } catch (e) {
       if (e instanceof RegisterPetError) {
         return reply.status(409).send({ message: e.message })

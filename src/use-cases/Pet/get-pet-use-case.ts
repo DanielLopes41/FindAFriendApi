@@ -1,9 +1,15 @@
 import { PetRepository } from '@/repositories/pet-repository'
-import { Pet } from '@prisma/client'
 import { FailToSearchPetError } from '../errors/fail-to-seach-pets-error'
 
 interface SearchPetsUseCaseResponse {
-  pet: Pet
+  name: string
+  description: string
+  age: string
+  size: string
+  energy_level: string
+  independency: string
+  environment: string
+  requirements: string[]
 }
 export class GetPetUseCase {
   constructor(private petsRepository: PetRepository) {}
@@ -15,7 +21,27 @@ export class GetPetUseCase {
         id,
       })
       if (!pet) throw new FailToSearchPetError()
-      return { pet }
+      const {
+        age,
+        description,
+        energy_level,
+        environment,
+        independency,
+        name,
+        requirements,
+        size,
+      } = pet
+      if (!pet) throw new FailToSearchPetError()
+      return {
+        age,
+        description,
+        energy_level,
+        environment,
+        independency,
+        name,
+        requirements,
+        size,
+      }
     } catch {
       throw new FailToSearchPetError()
     }

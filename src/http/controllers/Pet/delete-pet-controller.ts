@@ -20,7 +20,7 @@ export class DeletePetController {
         id,
         org_id,
       })
-      return reply.status(201)
+      return reply.status(200).send({})
     } catch (e) {
       if (e instanceof RegisterPetError) {
         return reply.status(409).send({ message: e.message })

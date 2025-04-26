@@ -18,8 +18,8 @@ model Org {
   email         String   @unique
   manager       String
   cep           String
-  address       String   @unique
-  city          String 
+  address       String
+  city          String
   state         String
   whatsapp      String
   password_hash String

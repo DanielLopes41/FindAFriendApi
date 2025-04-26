@@ -16,7 +16,7 @@ export class PetRequirementController {
         pet_id,
         Requirement,
       })
-      return reply.status(201)
+      return reply.status(201).send({ message: 'sucess' })
     } catch (e) {
       if (e instanceof RegisterPetError) {
         return reply.status(409).send({ message: e.message })

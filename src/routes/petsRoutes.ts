@@ -11,7 +11,11 @@ export function petsRoutes(app: FastifyInstance) {
   const deletePetController = new DeletePetController()
   const searchPetsController = new SearchPetsController()
   const getPetController = new GetPetController()
-  app.post('/', { preHandler: loginRequired }, petRegisterController.register)
+  app.post(
+    '/pet',
+    { preHandler: loginRequired },
+    petRegisterController.register,
+  )
   app.post(
     '/requirement',
     { preHandler: loginRequired },
@@ -22,6 +26,6 @@ export function petsRoutes(app: FastifyInstance) {
     { preHandler: loginRequired },
     deletePetController.delete,
   )
-  app.get('/pets', searchPetsController.searchMany)
+  app.post('/pets', searchPetsController.searchMany)
   app.get('/pet/:id', getPetController.getPet)
 }

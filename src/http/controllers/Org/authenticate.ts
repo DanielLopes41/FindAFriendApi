@@ -26,7 +26,10 @@ export class OrgAuthenticateController {
         },
       )
 
-      return reply.status(200).send(token)
+      return reply.status(200).send({
+        token,
+        message: 'Login realizado com sucesso',
+      })
     } catch (e) {
       if (e instanceof InvalidCredentialsError) {
         return reply.status(400).send({ message: e.message })

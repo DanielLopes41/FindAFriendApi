@@ -21,5 +21,18 @@ export interface PetRepository {
     page?: number
   }): Promise<Pet[]>
   delete(params: { id: string; org_id: string }): Promise<void>
-  getPet({ id }: { id: string }): Promise<Pet | undefined | null>
+  getPet({ id }: { id: string }): Promise<
+    | {
+        name: string
+        description: string
+        age: string
+        size: string
+        energy_level: string
+        independency: string
+        environment: string
+        requirements: string[]
+      }
+    | undefined
+    | null
+  >
 }

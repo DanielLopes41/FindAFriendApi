@@ -7,12 +7,38 @@ export class PrismaPetRepository implements PetRepository {
       where: {
         id,
       },
+      include: {
+        requirements: true,
+      },
     })
-    return pet
+    if (!pet) {
+      throw new Error('Pet not found')
+    }
+
+    const {
+      name,
+      description,
+      age,
+      size,
+      energy_level,
+      independency,
+      environment,
+    } = pet
+
+    return {
+      name,
+      description,
+      age,
+      size,
+      energy_level,
+      independency,
+      environment,
+      requirements: pet.requirements.map((req) => req.Requirement),
+    }
   }
 
   async delete({ id, org_id }: { id: string; org_id: string }): Promise<void> {
-    await prisma.pet.delete({
+    await prisma.pet.deleteMany({
       where: {
         id,
         org_id,
@@ -41,13 +67,13 @@ export class PrismaPetRepository implements PetRepository {
 
     const filters: {
       age?: string
-      city: string
       size?: string
       energy_level?: string
       independency?: string
       environment?: string
-    } = { city }
-
+      org?: { city: string }
+    } = {}
+    if (city) filters.org = { city }
     if (age) filters.age = age
     if (size) filters.size = size
     if (energy_level) filters.energy_level = energy_level

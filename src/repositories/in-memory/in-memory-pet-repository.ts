@@ -20,8 +20,30 @@ export class InMemoryPetRepository implements PetRepository {
   constructor(private orgsRepository?: InMemoryOrgRepository) {}
   async getPet({ id }: { id: string }) {
     const pet = await this.items.find((item) => id === item.id)
+    if (!pet) {
+      throw new Error('Pet not found')
+    }
 
-    return pet
+    const {
+      name,
+      description,
+      age,
+      size,
+      energy_level,
+      independency,
+      environment,
+    } = pet
+
+    return {
+      name,
+      description,
+      age,
+      size,
+      energy_level,
+      independency,
+      environment,
+      requirements: [],
+    }
   }
 
   async delete({ id, org_id }: { id: string; org_id: string }) {

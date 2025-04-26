@@ -30,7 +30,9 @@ export class OrgRegisterController {
         state,
         city,
       })
-      return reply.status(201)
+      return reply
+        .status(201)
+        .send({ message: 'Organização registrada com sucesso.' })
     } catch (e) {
       if (e instanceof OrgAlredyExistsError) {
         return reply.status(409).send({ message: e.message })

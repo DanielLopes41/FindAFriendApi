@@ -1,6 +1,7 @@
 import { PetRepository } from '@/repositories/pet-repository'
 import { Pet } from '@prisma/client'
 import { FailToSearchPetError } from '../errors/fail-to-seach-pets-error'
+
 interface SearchPetsUseCaseProps {
   city: string
   page?: number
@@ -10,9 +11,11 @@ interface SearchPetsUseCaseProps {
   independency?: string
   environment?: string
 }
+
 interface SearchPetsUseCaseResponse {
   pets: Pet[]
 }
+
 export class SearchPetsUseCase {
   constructor(private petsRepository: PetRepository) {}
 
@@ -27,6 +30,7 @@ export class SearchPetsUseCase {
   }: SearchPetsUseCaseProps): Promise<SearchPetsUseCaseResponse> {
     try {
       if (!city) throw new FailToSearchPetError()
+
       const pets = await this.petsRepository.searchMany({
         city,
         age,
@@ -38,8 +42,11 @@ export class SearchPetsUseCase {
       })
 
       return { pets }
-    } catch {
-      throw new FailToSearchPetError()
+    } catch (e) {
+      if (e instanceof FailToSearchPetError) {
+        throw e
+      }
+      throw e
     }
   }
 }

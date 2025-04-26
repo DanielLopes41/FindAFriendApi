@@ -66,9 +66,9 @@ describe('Get pet Use Case', () => {
         connect: { id: 'org-13' },
       },
     })
-    const { pet } = await sut.execute({
+    const { name } = await sut.execute({
       id: '2',
     })
-    expect(pet.name).toEqual('Friend')
+    expect(name).toEqual('Friend')
   })
 })

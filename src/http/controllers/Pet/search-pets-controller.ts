@@ -1,3 +1,4 @@
+import { FailToSearchPetError } from '@/use-cases/errors/fail-to-seach-pets-error'
 import { RegisterPetError } from '@/use-cases/errors/register-pet-error'
 import { makeSearchPetsUseCase } from '@/use-cases/factories/make-search-pets-use-case'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -18,7 +19,7 @@ export class SearchPetsController {
       petSchema.parse(request.body)
     try {
       const searchPetsUseCase = makeSearchPetsUseCase()
-      await searchPetsUseCase.execute({
+      const { pets } = await searchPetsUseCase.execute({
         city,
         age,
         energy_level,
@@ -27,10 +28,14 @@ export class SearchPetsController {
         size,
         page,
       })
-      return reply.status(201)
+      return reply.status(200).send({ pets })
     } catch (e) {
       if (e instanceof RegisterPetError) {
         return reply.status(409).send({ message: e.message })
+      }
+
+      if (e instanceof FailToSearchPetError) {
+        return reply.status(404).send({ message: e.message })
       }
 
       throw e
